@@ -1,0 +1,26 @@
+import { Groq } from 'groq-sdk';
+
+const groq = new Groq();
+
+const system_prompt = "أنت موظف خدمة عملاء احترافي في شركة 'المحمدية'. مهمتك هي الرد على استفسارات العملاء بخصوص خدماتنا اللوجستية، الشحن، التخليص الجمركي، والموانئ التي نعمل بها (مثل دمياط، مطار برج العربالسويس، ,الاسكندرية , والأدبية). اجعل أسلوبك مهنياً، ودوداً، ومختصراً. إذا سألك العميل عن معلومة خارج نطاق خدمات الشركة، اعتذر بلباقة وأخبره بأنك مخصص لخدمات شركة المحمدية فقط. تحدث باللغة التي يستخدمها "
+
+const chatCompletion = await groq.chat.completions.create({
+    "messages": [
+        {
+            "role": "user",
+            "content": system_prompt
+        }
+    ],
+    "model": "openai/gpt-oss-120b",
+    "temperature": 1,
+    "max_completion_tokens": 8192,
+    "top_p": 1,
+    "stream": true,
+    "reasoning_effort": "medium",
+    "stop": null
+});
+
+for await (const chunk of chatCompletion) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || '');
+}
+

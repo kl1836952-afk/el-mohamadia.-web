@@ -1,0 +1,275 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maritime-abyss: #030812;
+  --color-maritime-ocean: #07162c;
+  --color-maritime-wave: #0a2240;
+  --color-cargo-orange: #f26419;
+  --color-cargo-steel: #4e5f70;
+  --color-car-amber: #f59e0b;
+  --color-car-red: #ef4444;
+}
+
+/* Custom background patterns for shipping lanes and highways */
+.maritime-grid {
+  background-size: 40px 40px;
+  background-image: radial-gradient(circle, rgba(14, 116, 144, 0.08) 1.2px, transparent 1.2px);
+}
+
+.shipping-lanes {
+  position: relative;
+  overflow: hidden;
+}
+.shipping-lanes::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(45deg, rgba(20, 184, 166, 0.015) 0px, rgba(20, 184, 166, 0.015) 2px, transparent 2px, transparent 10px);
+  pointer-events: none;
+}
+
+/* Cargo container corrugated sheet effect */
+.cargo-steel-sheet {
+  background: linear-gradient(180deg, #091220 0%, #050a12 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+}
+
+/* Horizontal metallic container ridges */
+.cargo-steel-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.01) 4%, 
+    rgba(0, 0, 0, 0.12) 8%, 
+    transparent 12%,
+    transparent 16%,
+    rgba(255, 255, 255, 0.01) 20%, 
+    rgba(0, 0, 0, 0.12) 24%, 
+    transparent 28%
+  );
+  background-size: 110px 100%;
+  pointer-events: none;
+  opacity: 0.55;
+  border-radius: inherit;
+}
+
+/* Automotive shiny carbon deck */
+.carbon-deck {
+  background-color: #070b12;
+  background-image: 
+    linear-gradient(45deg, #0d121c 25%, transparent 25%), 
+    linear-gradient(-45deg, #0d121c 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #0d121c 75%), 
+    linear-gradient(-45deg, transparent 75%, #0d121c 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+/* --- High-contrast Outdoor Port Light Mode Overrides --- */
+html.light,
+body.light,
+.light {
+  background-color: #f8fafc !important;
+}
+
+.light .min-h-screen {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Background dots contrast adjusted for light background */
+.light .maritime-grid {
+  background-image: radial-gradient(circle, rgba(14, 116, 144, 0.12) 1.2px, transparent 1.2px) !important;
+}
+
+/* Ensure header retains perfect marine contrast */
+.light header {
+  background-color: #0b1e36 !important;
+  color: #ffffff !important;
+}
+
+.light header .text-white,
+.light header h1,
+.light header button,
+.light header span,
+.light header p {
+  color: #ffffff !important;
+}
+
+.light header .text-amber-400 {
+  color: #f59e0b !important;
+}
+
+/* General containers & widgets mapped to clean white card style containing real shadows */
+.light .bg-slate-950,
+.light .bg-\[\#070e1b\]\/95,
+.light .bg-\[\#070e1b\],
+.light .bg-slate-900,
+.light .bg-\[\#050a14\],
+.light .bg-[#050a14],
+.light .bg-[#050914],
+.light .bg-[#050914]/90,
+.light .bg-\[\#070e1b\]\/95,
+.light .bg-[#070e1b]/95,
+.light .bg-[#070e1b],
+.light .bg-[#0a1e36],
+.light .bg-[#091220],
+.light .bg-[#050a12],
+.light .bg-slate-950\/95,
+.light .bg-blue-950\/90,
+.light .bg-[#0b172a],
+.light .bg-slate-900\/50,
+.light .bg-[#0b1329],
+.light .bg-slate-930,
+.light .bg-slate-900\/40,
+.light .bg-blue-950\/80,
+.light .bg-blue-900\/30 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Text overrides for readability in bright environments */
+.light .text-slate-100,
+.light .text-slate-200,
+.light .text-slate-350,
+.light .text-slate-330,
+.light .text-slate-300,
+.light .text-slate-400,
+.light .text-blue-100,
+.light .text-blue-200,
+.light .text-zinc-300,
+.light .text-zinc-400 {
+  color: #334155 !important; /* Deep Slate text */
+}
+
+.light h1.text-white,
+.light h2.text-white,
+.light h3.text-white,
+.light h4.text-white,
+.light p.text-white,
+.light span.text-white,
+.light div.text-white {
+  color: #0f172a !important;
+}
+
+/* Gold elements need darker contrasting amber/gold to be legible outside */
+.light .text-amber-305,
+.light .text-amber-300,
+.light .text-amber-200 {
+  color: #b45309 !important;
+  font-weight: 700 !important;
+}
+
+.light .text-amber-400 {
+  color: #d97706 !important;
+}
+
+/* Red / Alert elements */
+.light .text-rose-450,
+.light .text-rose-400,
+.light .text-red-400,
+.light .text-car-red,
+.light .text-rose-300 {
+  color: #dc2626 !important;
+}
+
+/* Green / Success elements */
+.light .text-emerald-400,
+.light .text-[#25D366] {
+  color: #15803d !important;
+}
+
+/* Buttons in light mode */
+.light .bg-slate-950 button,
+.light button.bg-slate-950,
+.light button.bg-slate-900 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light button.bg-amber-400 {
+  background-color: #f59e0b !important;
+  color: #0f172a !important;
+}
+
+.light button.bg-blue-900\/40,
+.light button.bg-white\/5 {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Custom list items & grid elements */
+.light .border-blue-900\/20,
+.light .border-blue-900\/30,
+.light .border-blue-900\/40,
+.light .border-blue-900\/50,
+.light .border-blue-800\/40,
+.light .border-[#1e3a8a]\/20,
+.light .border-[#1e3a8a]\/40,
+.light .border-slate-800,
+.light .border-slate-900 {
+  border-color: #cbd5e1 !important;
+}
+
+.light .divide-blue-900\/20 > * + *,
+.light .divide-blue-900\/30 > * + *,
+.light .divide-slate-800 > * + * {
+  border-color: #cbd5e1 !important;
+}
+
+/* Input boxes & form controllers */
+.light input,
+.light select,
+.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light input::placeholder,
+.light textarea::placeholder {
+  color: #64748b !important;
+}
+
+.light input:focus,
+.light select:focus,
+.light textarea:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Chat box enhancements */
+.light .bg-slate-950\/30,
+.light .bg-slate-950\/40 {
+  background-color: #f8fafc !important;
+}
+
+.light .bg-emerald-500\/10,
+.light .bg-emerald-400\/10 {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.light .bg-amber-400\/10,
+.light .bg-amber-500\/10 {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+/* Hero Section adjustments to keep readability */
+.light .from-blue-950,
+.light .to-blue-950 {
+  background-color: #ffffff !important;
+}
+
