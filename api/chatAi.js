@@ -1,4 +1,4 @@
-const { Groq } = require('groq-sdk');
+import { Groq } from 'groq-sdk';
 const system_Ai = `
 You are the AI assistant named "المساعد الذكي للمحمدية" (Al-Mohammedia Smart Assistant), representing Al-Mohammedia for Customs Clearance and Logistics. 
 Your core mission is to assist clients regarding our logistics, shipping, customs clearance services.
@@ -42,7 +42,7 @@ const getAssistantMessage = (chatCompletion) => {
     }
     return "";
 };
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
