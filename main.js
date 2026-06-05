@@ -31,13 +31,44 @@ Key Instructions:
 const groq = new Groq({ apiKey: groq_api });
 const groqDB = [];
 
+const getErrorMessage = (error) => {
+    if (!error) return "Unexpected chat API error";
+    if (typeof error === "string") return error;
+    if (error.message) return String(error.message);
+
+    try {
+        return JSON.stringify(error);
+    } catch {
+        return String(error);
+    }
+};
+
+const getAssistantMessage = (chatCompletion) => {
+    const content = chatCompletion?.choices?.[0]?.message?.content;
+    if (typeof content === "string") return content;
+    if (Array.isArray(content)) {
+        return content
+            .map((part) => part?.text || part?.content || "")
+            .filter(Boolean)
+            .join("\n");
+    }
+    if (content && typeof content === "object") {
+        return content.text || content.message || JSON.stringify(content);
+    }
+    return "";
+};
+
 // الـ API المستهدف
-app.post('/chatAi', async (req, res) => {
+app.post(['/chatAi', '/api/chatAi'], async (req, res) => {
     try {
         console.log('Received request body:', JSON.stringify(req.body));
 
         // قراءة البرومت من الـ req.body
         const { prompt } = req.body;
+
+        if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+            return res.status(400).json({ error: "prompt is required" });
+        }
 
 
 
@@ -66,7 +97,11 @@ app.post('/chatAi', async (req, res) => {
             reasoning_effort: "none"
         });
 
-        const aiResponse = chatCompletion.choices[0].message.content;
+        const aiResponse = getAssistantMessage(chatCompletion);
+
+        if (!aiResponse) {
+            return res.status(502).json({ error: "No text response returned from AI provider" });
+        }
 
         // حفظ في الذاكرة المؤقتة للسياق
         groqDB.push({ prompt: cleanPrompt, message: aiResponse });
@@ -79,9 +114,10 @@ app.post('/chatAi', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Chat API Error:', error);
+        const errorMessage = getErrorMessage(error);
+        console.error('Chat API Error:', errorMessage);
         return res.status(500).json({
-            error: "عذراً، حدث خطأ داخلي في النظام. يرجى المحاولة مرة أخرى لاحقاً."
+            error: errorMessage
         });
     }
 });

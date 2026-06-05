@@ -13,6 +13,35 @@ interface ChatInterfaceProps {
   lang: "ar" | "en";
 }
 
+const getReadableText = (value: unknown): string => {
+  if (typeof value === "string") return value;
+  if (value == null) return "";
+
+  if (typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    const nestedText =
+      record.message ||
+      record.response ||
+      record.text ||
+      record.error ||
+      record.details ||
+      record.content;
+
+    if (nestedText && nestedText !== value) {
+      const text = getReadableText(nestedText);
+      if (text) return text;
+    }
+
+    try {
+      return JSON.stringify(value, null, 2);
+    } catch {
+      return String(value);
+    }
+  }
+
+  return String(value);
+};
+
 export default function ChatInterface({ lang }: ChatInterfaceProps) {
   const isAr = lang === "ar";
   const [messages, setMessages] = useState<Message[]>([
@@ -78,26 +107,29 @@ export default function ChatInterface({ lang }: ChatInterfaceProps) {
         let errorMessage = `HTTP ${response.status}`;
         try {
           const errorData = await response.json();
-          errorMessage = errorData.error || errorMessage;
+          errorMessage = getReadableText(errorData.error || errorData.message || errorData) || errorMessage;
         } catch (e) {
           // If response is not JSON, use status message
+          const text = await response.text().catch(() => "");
+          errorMessage = text || errorMessage;
         }
         throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      const assistantText = getReadableText(data.message || data.response || data.text || data);
 
       // Add assistant response to chat
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "assistant",
-        content: data.message || data.response || "لم أتمكن من الحصول على رد",
+        content: assistantText || "لم أتمكن من الحصول على رد",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "حدث خطأ غير متوقع";
+      const errorMessage = getReadableText(err instanceof Error ? err.message : err) || "حدث خطأ غير متوقع";
       console.error('Chat error:', errorMessage);
       setError(errorMessage);
 
