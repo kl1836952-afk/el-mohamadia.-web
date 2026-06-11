@@ -137,7 +137,7 @@ export default function PromoHeroVideo({ lang, activeTab, setActiveTab }: Props)
               <div id="benefit-item-2" className="bg-blue-900/30 border border-blue-800/40 hover:border-amber-400/40 p-3.5 rounded-2xl flex items-start gap-2.5 transition-all">
                 <CheckCircle2 className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-black text-white">{isAr ? "الخدمة الذكية الفورية بجميني" : "AI-Powered Customs Encyclopedia"}</h4>
+                  <h4 className="font-black text-white">{isAr ? "الخدمة الذكيه للمحمدية " : "AI-Powered Customs Encyclopedia"}</h4>
                   <p className="text-blue-200/90 leading-relaxed font-sans">{isAr ? "احصل على بند التعرفة لسلعتك أو سيارتك فورا وبدون انتظار" : "Determine tariffs, HS Codes, and exact import laws in seconds"}</p>
                 </div>
               </div>
