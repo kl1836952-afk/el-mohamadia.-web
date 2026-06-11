@@ -183,6 +183,7 @@ const system_Ai = `
 - عدم وجود رقم ACID في البوليصة = رفض الشحنة فوراً + غرامات أرضية.
 - تواصل مع فريق المحمدية أولاً لاستخراج رقم ACID قبل أي خطوة أخرى.
 `.trim();
+
 const groq = new Groq({ apiKey: groq_api });
 const groqDB = [];
 
