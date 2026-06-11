@@ -238,7 +238,7 @@ app.post(['/chatAi', '/api/chatAi'], async (req, res) => {
                 }
             ],
             model: "qwen/qwen3-32b",
-            temperature: 0.85,
+            temperature: 0.25,
             max_completion_tokens: 1024,
             reasoning_effort: "none"
         });
